@@ -1,0 +1,61 @@
+
+---
+
+## 3. `pipeline_schema.json`
+
+```json
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "DeterministicAgentPlan",
+  "type": "object",
+  "required": ["goal", "original_request", "steps"],
+  "properties": {
+    "goal": {
+      "type": "string",
+      "description": "Normalized identifier of the task type."
+    },
+    "original_request": {
+      "type": "string",
+      "description": "Original user expression."
+    },
+    "steps": {
+      "type": "array",
+      "description": "Ordered list of execution steps.",
+      "items": {
+        "type": "object",
+        "required": ["id", "action", "params"],
+        "properties": {
+          "id": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "action": {
+            "type": "string",
+            "description": "Action type, e.g., search, extract, summarize, call_api."
+          },
+          "params": {
+            "type": "object",
+            "description": "Action-specific parameters.",
+            "additionalProperties": true
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "constraints": {
+      "type": "object",
+      "description": "Optional execution constraints.",
+      "properties": {
+        "max_latency_ms": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "must_be_reproducible": {
+          "type": "boolean"
+        }
+      },
+      "additionalProperties": true
+    }
+  },
+  "additionalProperties": false
+}
